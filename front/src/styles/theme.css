@@ -1,0 +1,85 @@
+body{
+    font-family : var(--font-family);
+    font-optical-sizing: auto;
+    color: var(--text-color);
+}
+
+.btn{
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding:  12px 12px;
+    border: 0;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background-color 0.4s;
+
+  
+}
+
+.btn-primary{
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.btn-outline-primary{
+    background-color: var(--white);
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-primary:hover{
+    background-color: var(--primary-dark);
+}
+
+.btn-danger{
+    background-color: var(--danger);
+    color: var(--white);
+}
+.btn-danger:hover{
+    background-color: var(--dark-danger);
+}
+
+.btn-succes{
+    background-color: var(--succes);
+    color: var(--white);
+}
+
+
+.card{
+    padding: 24px;
+    border-radius: 20px;
+    border: var(--border);
+}
+
+.active-item{
+    background-color: var( --ultra-light-grey);
+    border-radius: var(--radius);
+}
+
+.text-primary{
+    color: var(--primary);
+}
+.radius{
+    border-radius: var(--radius)
+}
+.input, textarea{
+    border: var(--border);
+    font-family: var(--font-family);
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.active-link{
+    background-color: var(--primary-dark);
+    border-radius: var(--radius);
+    color: var(--white);
+}
+
+.error{
+    color: var(--danger);
+    font-size: 12px;
+    font-weight: 500;
+}
+button[disabled]{
+    opacity: 0.5;
+}
