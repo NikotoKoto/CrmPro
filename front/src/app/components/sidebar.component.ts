@@ -18,7 +18,7 @@ import {
   selector: 'app-sidebar',
   imports: [LucideAngularModule,RouterLink],
   template: `
-    <div class="flex justify-center  mt-20 mb-20 ">
+    <div class="<flex justify-center  mt-20 mb-20 ">
       <div class="sidebar-title flex items-center gap-16">
         <lucide-icon [img]="LayoutDashboard" class="icon" /><a routerLink="/dashboard">Dashboard</a>
       </div>
