@@ -43,4 +43,14 @@ public class CreateContactRequestDto {
     public void setCompany(String company){
         this.company = company;
     }
+
+    @Override
+    public String toString() {
+        return "CreateContactRequestDto{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", company='" + company + '\'' +
+                '}';
+    }
 }

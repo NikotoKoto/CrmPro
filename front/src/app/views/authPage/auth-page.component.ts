@@ -81,7 +81,7 @@ form {
 export class AuthPageComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  authSerice = inject(AuthService);
+  authService = inject(AuthService);
   userForm = this.fb.group(
     {
       name: ['', Validators.required],
@@ -106,7 +106,7 @@ export class AuthPageComponent {
 
     const userForm: UserForm = this.userForm.getRawValue() as UserForm;
     try {
-      await this.authSerice.register(userForm);
+      await this.authService.register(userForm);
       this.router.navigateByUrl('/');
       this.userForm.reset();
     } catch (error) {

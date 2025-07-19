@@ -1,4 +1,4 @@
 package com.example.crm.User.dto;
 
-public class UserResponseDto {
+public record UserResponseDto(Long id, String email,String firstname) {
 }

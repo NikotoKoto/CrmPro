@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'app-order',
   imports: [],
   template: `
-    <p>
-      order works!
-    </p>
+    <div class="flex justify-center">
+      <h2 class="text-xxl text-bold  my-10">📦 Les commandes </h2>
+    </div>
   `,
   styles: ``
 })

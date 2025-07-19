@@ -17,7 +17,8 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
     </div>
 
     <div class="landing-section">
-      <div>
+      <h3 class="text-lg">Curieux? Essayez-nous gratuitement en vous inscrivant</h3>
+      <div class="landing-grid">
         <ul class="features-list">
         @for(feature of features(); track $index){
            <li>
@@ -25,12 +26,10 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
             <h4>{{feature.title}}</h4>
             <p>{{feature.description}}</p>
           </li>
-        }  
-       
-         
+        }    
         </ul>
+        <app-auth-page id="signup-section"/>
       </div>
-      <app-auth-page id="signup-section"/>
     </div>
     <div class="img-container">
       <img src="assets/screenshot.png" alt="screenshot" />
@@ -46,17 +45,35 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
   
   .discoverySection{
     width:100%;
-    background-color:var(--section-bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(
+    to bottom,
+    white 0%,
+    #f9f9f9 30%,
+    var(--section-bg) 100%
+  );
     padding: var(--spacing-xl) var(--spacing-md);
     text-align:center;
+    height:800px;
   }
   .title{
+    
     max-width: 600px; 
   line-height: 1.2;
   word-break: break-word;
   text-align: center;
   }
+
   .landing-section{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding:  var(--spacing-md);
+  }
+  .landing-grid{
     width:100%;
     background-color: var(--background-color);
     padding: 0 var(--spacing-md) var(--spacing-xl) 0;
@@ -67,7 +84,7 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
   }
   .features-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, minmax(400px, 1fr));
   gap: var(--spacing-lg);
   padding: var(--spacing-md);
 

@@ -17,7 +17,7 @@ import { SidebarComponent } from '../../components/sidebar.component';
   styles: [`
     .layout {
       display: grid;
-      grid-template-columns: 15% 85%;
+      grid-template-columns: 25% 75%;
       min-height: 100vh;
     }
     .main-content {

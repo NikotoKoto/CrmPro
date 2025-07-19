@@ -5,6 +5,7 @@ import { computed, inject, Injectable, resource } from '@angular/core';
 import { UserForm } from '../interfaces/user.interfaces';
 
 const API_AUTH = 'http://localhost:8080/auth';
+const API_USER = 'http://localhost:8080/users'
 @Injectable({
   providedIn: 'root',
 })
@@ -26,14 +27,14 @@ export class AuthService {
   private router = inject(Router);
 
   async fetchCurrentUser() {
-  const response = await fetch(`${API_AUTH}/current`, {
-    credentials: 'include' 
-  });
-  if(!response.ok){
-    return undefined;
+    const response = await fetch(`${API_USER}/me`, {
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      return undefined;
+    }
+    return await response.json();
   }
-  return await response.json();
-}
 
   async register(user: UserForm): Promise<User> {
     try {
@@ -43,7 +44,7 @@ export class AuthService {
           'Content-type': 'application/json',
         },
         body: JSON.stringify(user),
-        credentials:'include',
+        credentials: 'include',
       });
       if (response.ok) {
         const data = await response.json();
@@ -61,7 +62,7 @@ export class AuthService {
     try {
       const response = await fetch(`${API_AUTH}/login`, {
         method: 'POST',
-         credentials: 'include',
+        credentials: 'include',
         headers: {
           'Content-type': 'application/json',
         },
@@ -79,13 +80,13 @@ export class AuthService {
     }
   }
 
-  async loggout(){
-    await fetch(`${API_AUTH}/logout`,{
-      method:'DELETE',
-      credentials:'include'
+  async loggout() {
+    await fetch(`${API_AUTH}/logout`, {
+      method: 'DELETE',
+      credentials: 'include',
     });
     this.currentUserResource.reload();
-    this.router.navigateByUrl("/signIn")
+    this.router.navigateByUrl('/signIn');
   }
 
   constructor() {}

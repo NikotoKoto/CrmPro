@@ -1,4 +1,7 @@
 package com.example.crm.auth;
 
-public record AuthResponse() {
+/**
+ * DTO pour encapsuler le JWT renvoyé au client.
+ */
+public record AuthResponse(String token) {
 }

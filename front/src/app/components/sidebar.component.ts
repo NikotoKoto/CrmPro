@@ -28,7 +28,7 @@ import {
       <h3 class="flex justify-center mb-20 mt-20 sidebar-option">Management</h3>
       <ul class="flex flex-col items-center gap-20">
         <li><lucide-icon [img]="User" class="icon" /><a routerLink="/dashboard/contacts">Contact</a></li>
-        <li><lucide-icon [img]="ShoppingCart" class="icon" /><a>Commandes</a></li>
+        <li><lucide-icon [img]="ShoppingCart" class="icon" /><a routerLink="/dashboard/order">Commandes</a></li>
         <li><lucide-icon [img]="BarChart" class="icon" /><a>Chiffres d'affaire</a></li>
         <li><lucide-icon [img]="FileText" class="icon" /><a>Documents</a></li>
       </ul>

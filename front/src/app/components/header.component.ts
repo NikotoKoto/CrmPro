@@ -30,12 +30,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     width: 100%;
     min-width:350px;
     min-height: 85px;
-    background-color: var(--section-bg);
     display:flex;
     align-items:center;
+    background-color:  var(--dark-grey);
+    color:var(--white);
     justify-content: space-between;
     padding: var(--spacing-md);
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
      z-index: 10;
 
   }`,

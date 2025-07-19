@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { DashboardLayoutComponent } from './dashboardLayout.component';
+
 
 export const dashboardRoutes: Routes = [
   {
@@ -13,11 +13,11 @@ export const dashboardRoutes: Routes = [
     path: 'contacts',
     loadComponent: async () =>
       (await import('./views/contact/contacts.component')).ContactsComponent,
-  },
+        },
   {
     path: 'order',
     loadComponent: async () =>
-      (await import('./views/order.component')).OrderComponent,
+      (await import('./views/order/order.component')).OrderComponent,
   },
   {
     path: 'chiffres',

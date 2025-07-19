@@ -6,13 +6,17 @@ import { ContactListComponent } from "./components/contact-list.component";
   selector: 'app-contacts',
   imports: [ AddContactComponent, ContactListComponent],
   template: `
+  <div class="flex justify-center">
+    <h2 class="text-xxl text-bold my-10">Contacts</h2>
+  </div>
   <app-add-contact/>
   <app-contact-list/>`,
   styles: `
   :host{
-    display:grid;
-    grid-template-columns: repeat(2,1fr);
+    display:flex;
+    flex-direction: column;
     
+   
   }`
 })
 export class ContactsComponent {}

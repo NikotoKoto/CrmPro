@@ -7,11 +7,14 @@ import com.example.crm.Contact.service.ContactService;
 import com.example.crm.User.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/contacts")
 public class ContactController {
     private final ContactService contactService;
 
@@ -23,15 +26,17 @@ public class ContactController {
     @PostMapping
     public ResponseEntity<ContactResponseDto> createContact(
             @RequestBody CreateContactRequestDto dto,
-            @RequestAttribute("user") User user) {
-        ContactResponseDto response = contactService.createContact(dto, user);
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        System.out.println("DTO reçu côté backend : " + dto);
+        ContactResponseDto response = contactService.createContact(dto, userDetails.getUsername());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
     public ResponseEntity<List<ContactResponseDto>> getContacts(
-            @RequestAttribute("user") User user) {
-        List<ContactResponseDto> contacts = contactService.getContactsByUser(user);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        List<ContactResponseDto> contacts = contactService.getContactsByUser(userDetails.getUsername());
         return ResponseEntity.ok(contacts);
     }
 
@@ -43,20 +48,22 @@ public class ContactController {
         return ResponseEntity.ok(contact);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ContactResponseDto> updateContact(
             @PathVariable Long id,
             @RequestBody UpdateContactRequestDto dto,
-            @RequestAttribute("user") User user) {
-        ContactResponseDto updated = contactService.updateContact(id, dto, user);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ContactResponseDto updated = contactService.updateContact(id, dto, userDetails.getUsername());
         return ResponseEntity.ok(updated);
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContact(
             @PathVariable Long id,
-            @RequestAttribute("user") User user) {
-        contactService.deleteContact(id, user);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        contactService.deleteContact(id, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 }
