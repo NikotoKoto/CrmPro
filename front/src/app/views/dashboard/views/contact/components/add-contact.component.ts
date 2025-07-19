@@ -71,7 +71,7 @@ contactService =inject(ContactService)
     name:['',Validators.required],
     email:['',[Validators.required, Validators.email]],
     phone:[''],
-    company:['']
+    company:['',Validators.required]
   })
 
 initContactFormEffect = effect(()=> {

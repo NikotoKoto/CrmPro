@@ -27,7 +27,7 @@ public class ContactService {
         User owner = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        
+
         Contact contact = ContactMapper.toEntity(dto);
         contact.setOwner(owner);
         Contact saved = contactRepository.save(contact);

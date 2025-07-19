@@ -1,5 +1,6 @@
 package com.example.crm.Contact.entity;
 
+import com.example.crm.Company.entity.Company;
 import com.example.crm.User.entity.User;
 import jakarta.persistence.*;
 
@@ -10,10 +11,15 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String phone;
-    private String company;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -65,11 +71,11 @@ public class Contact {
     }
 
     //Getter & setter company
-    public String getCompany (){
+    public Company getCompany (){
         return company;
     }
 
-    public void setCompany(String company){
+    public void setCompany(Company company){
         this.company = company;
     }
 
