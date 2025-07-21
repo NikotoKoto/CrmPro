@@ -18,9 +18,9 @@ import {
   selector: 'app-sidebar',
   imports: [LucideAngularModule,RouterLink],
   template: `
-    <div class="<flex justify-center  mt-20 mb-20 ">
+    <div class="flex justify-center  mt-20 mb-20 ">
       <div class="sidebar-title flex items-center gap-16">
-        <lucide-icon [img]="LayoutDashboard" class="icon" /><a routerLink="/dashboard">Dashboard</a>
+        <lucide-icon [img]="LayoutDashboard" class="icon" /><a class="dashboard-a" routerLink="/dashboard">Dashboard</a>
       </div>
     </div>
     <hr>
@@ -59,6 +59,10 @@ import {
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 5;
   }
+
+  .dashboard-a:hover{
+    color: white;
+  }
   
   li{
     display:flex;
@@ -90,10 +94,6 @@ import {
     border-radius: 15px;
     background-color:var(--primary-hex);
     cursor:pointer;
-
-    /* &:active{
-      transform: scale(0.95);
-    } */
   }
   .sidebar-option{
     color:var(--grey);

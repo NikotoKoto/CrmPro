@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { DashboardChartComponent } from "./components/dashboard-chart.component";
+import { ContactService } from '../contact/shared/service/contact.service';
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [DashboardChartComponent],
+  imports: [],
   template: ` <h2 class="text-center">Bienvenue {{ user().firstname }} sur ton dashboard</h2>
   <div class="layout mt-20">
-    <app-dashboard-chart/> 
+    
     <div class="card flex flex-col">
-      <p>Nombre de clients</p>
-      <p>25000</p>
+      <p class="flex justify-center">Nombre de clients:</p>
+      <p class="flex justify-center">{{currentContact().length}}</p>
     </div>
     </div>
     `,
@@ -30,5 +30,7 @@ import { DashboardChartComponent } from "./components/dashboard-chart.component"
 })
 export class DashboardHomeComponent {
   AuthService = inject(AuthService);
+  contactService = inject(ContactService)
+  currentContact = this.contactService.currentContact;
   user = this.AuthService.currentUser;
 }

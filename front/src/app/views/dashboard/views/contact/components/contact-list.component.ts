@@ -27,7 +27,7 @@ import { RouterLink } from '@angular/router';
       <td>{{ contact.name }}</td>
       <td>{{ contact.email }}</td>
       <td>{{ contact.phone }}</td>
-      <td>{{ contact.company }}</td>
+      <td>{{ contact.company.name }}</td>
       <td>
         <button (click)="editContact(contact.id)"><lucide-icon [img]="SquarePen" class="icon blue"/></button>
         <button (click)="deleteContact(contact.id)"><lucide-icon [img]="Delete" class="icon red"/></button>

@@ -10,9 +10,10 @@ import java.time.LocalDate;
 
 public class OrderResponseDto {
     private Long id;
-    private String companyName;
+    private String company;
     private LocalDate orderDate;
     private OrderStatus orderStatus;
+    private String orders;
     private BigDecimal totalAmount;
 
 
@@ -26,12 +27,12 @@ public class OrderResponseDto {
         this.id = id;
     }
 
-    public String getCompanyName(){
-        return companyName;
+    public String getCompany(){
+        return company;
     }
 
-    public void setCompanyName(String companyName){
-        this.companyName = companyName;
+    public void setCompany(String company){
+        this.company = company;
     }
     public LocalDate getOrderDate(){
         return orderDate;
@@ -40,6 +41,13 @@ public class OrderResponseDto {
     public void setOrderDate(LocalDate orderDate ){
         this.orderDate = orderDate;
 
+    }
+
+    public void setOrders (String orders){
+        this.orders = orders;
+    }
+    public String getOrders(){
+        return orders;
     }
 
     public OrderStatus getOrderStatus(){

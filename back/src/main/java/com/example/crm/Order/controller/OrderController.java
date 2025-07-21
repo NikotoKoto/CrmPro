@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -27,8 +26,15 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@RequestBody CreateOrderRequestDto dto,
                                                         @AuthenticationPrincipal UserDetails userDetails){
+        System.out.println("UserDetails username: " + userDetails.getUsername());
         OrderResponseDto response = orderService.createOrder(dto,userDetails.getUsername());
         return ResponseEntity.ok(response);
 
+    }
+
+    @GetMapping
+    public ResponseEntity <List<OrderResponseDto>> getOrder(@AuthenticationPrincipal UserDetails userDetails){
+        List<OrderResponseDto> order = orderService.getOrderByUser(userDetails.getUsername());
+        return ResponseEntity.ok(order);
     }
 }

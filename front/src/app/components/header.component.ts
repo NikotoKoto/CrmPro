@@ -13,7 +13,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         <span>Bienvenue {{ user().firstname }} </span>
       </li>
       <li><a (click)="logout()">Deconnexion</a></li>
-      }@else if(isLoggedin() === false){
+      }@else if(!isLoggedin()){
 
       <li>
         <a routerLink="/signIn" routerLinkActive="active-link">Se connecter</a>

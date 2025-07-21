@@ -42,6 +42,17 @@ input{
     border-radius: 10px;
 }
 
+select{
+  border: var(--border);
+    padding: 12px;
+    border-radius: 10px;
+    cursor:pointer;
+  }
+  option{
+    cursor:pointer;
+  }
+
+
 textarea{
   border: var(--border);
     padding: 12px;

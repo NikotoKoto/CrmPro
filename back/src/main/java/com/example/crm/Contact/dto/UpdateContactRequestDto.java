@@ -7,7 +7,7 @@ public class UpdateContactRequestDto {
     private String name;
     private String email;
     private String phone;
-    private Company company;
+    private String company;
 
     //Getter & setter email
     public String getEmail (){
@@ -37,11 +37,11 @@ public class UpdateContactRequestDto {
     }
 
     //Getter & setter company
-    public Company getCompany (){
+    public String getCompany (){
         return company;
     }
 
-    public void setCompany(Company company){
+    public void setCompany(String company){
         this.company = company;
     }
 }

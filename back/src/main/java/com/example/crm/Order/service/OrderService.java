@@ -10,7 +10,10 @@ import com.example.crm.Order.repository.OrderRepository;
 import com.example.crm.User.entity.User;
 import com.example.crm.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -27,15 +30,25 @@ public class OrderService {
     }
 
     public OrderResponseDto createOrder(CreateOrderRequestDto dto, String email){
-        User owner =  userRepository.findByEmail(email)
+        System.out.println("email>>>>>>>>>" + email);
+        User user =  userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(()-> new RuntimeException("User not found"));
-        Company company = companyRepository.findByName(dto.getCompanyName())
-                .orElseThrow(()-> new RuntimeException("User not found"));
+        Company company = companyRepository.findByName(dto.getCompany())
+                .orElseThrow(()-> new RuntimeException("Company not found"));
         Order order = OrderMapper.toEntity(dto, company);
-        order.setOwner(owner);
+        order.setUser(user);
         Order orderSaved = orderRepository.save(order);
         return OrderMapper.toDto(orderSaved);
 
+    }
+
+    public List<OrderResponseDto> getOrderByUser (String email){
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(()-> new RuntimeException("User not found"));
+        return orderRepository.findByUser(user)
+                .stream()
+                .map(OrderMapper :: toDto)
+                .toList();
     }
 
 }

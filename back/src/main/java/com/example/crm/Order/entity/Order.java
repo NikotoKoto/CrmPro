@@ -18,16 +18,19 @@ public class Order {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "company_id", nullable = false)
-    private Company companyName;
+    private Company company;
 
-    @Column(nullable = false)
+    @Column(name="order_date",nullable = false)
     private LocalDate orderDate = LocalDate.now();
 
-    @Column(nullable = false)
+    @Column(name="status",nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
 
-    @Column(nullable = false)
+    @Column(name="orders",nullable = false)
+    private String orders;
+
+    @Column(name="total_amount",nullable = false)
     private BigDecimal totalAmount;
 
 
@@ -45,12 +48,12 @@ private User user;
         this.id = id;
     }
 
-    public Company getCompanyName() {
-        return companyName;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyName(Company companyName) {
-        this.companyName = companyName;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public LocalDate getOrderDate(){
@@ -60,6 +63,13 @@ private User user;
     public void setOrderDate(LocalDate orderDate ){
         this.orderDate = orderDate;
 
+    }
+
+    public void setOrders (String orders){
+        this.orders = orders;
+    }
+    public String getOrders(){
+        return orders;
     }
 
     public OrderStatus getOrderStatus(){
@@ -77,10 +87,10 @@ private User user;
         this.totalAmount = totalAmount;
     }
 
-    public User getOwner(){
+    public User getUser(){
         return user;
     }
-    public void setOwner(User user){
+    public void setUser(User user){
         this.user = user;
     }
 }

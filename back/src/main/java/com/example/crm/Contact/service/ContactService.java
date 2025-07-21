@@ -1,5 +1,7 @@
 package com.example.crm.Contact.service;
 
+import com.example.crm.Company.controller.CompanyRepository;
+import com.example.crm.Company.entity.Company;
 import com.example.crm.Contact.dto.ContactResponseDto;
 import com.example.crm.Contact.dto.CreateContactRequestDto;
 import com.example.crm.Contact.dto.UpdateContactRequestDto;
@@ -20,15 +22,22 @@ public class ContactService {
     ContactRepository contactRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CompanyRepository companyRepository;
 
 
     public ContactResponseDto createContact(CreateContactRequestDto dto, String email){
 
-        User owner = userRepository.findByEmail(email)
+        User owner = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-
-        Contact contact = ContactMapper.toEntity(dto);
+        Company company = companyRepository.findByName(dto.getCompany())
+                .orElseGet(()-> {
+                    Company newCompany = new Company();
+                    newCompany.setName(dto.getCompany());
+                    return companyRepository.save(newCompany);
+                });
+        Contact contact = ContactMapper.toEntity(dto, company);
         contact.setOwner(owner);
         Contact saved = contactRepository.save(contact);
 
@@ -37,7 +46,7 @@ public class ContactService {
     }
 
     public List<ContactResponseDto> getContactsByUser(String email){
-        User owner = userRepository.findByEmail(email)
+        User owner = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return contactRepository.findByOwner(owner)
                 .stream()
@@ -59,13 +68,15 @@ public class ContactService {
         Contact contact = contactRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contact not found"));
 
-        User owner = userRepository.findByEmail(email)
+        User owner = userRepository.findByEmailIgnoreCase(email)
         .orElseThrow(()-> new RuntimeException(("Contact not found")));
         if (!contact.getOwner().equals(owner)) {
             throw new RuntimeException("Unauthorized");
         }
+        Company company = companyRepository.findByName(dto.getCompany())
+                .orElseThrow(()-> new RuntimeException("Company not found"));
 
-        ContactMapper.toEntity(dto, contact);
+        ContactMapper.toEntity(dto, contact, company);
         Contact saved = contactRepository.save(contact);
 
         return ContactMapper.toDto(saved);
@@ -75,7 +86,7 @@ public class ContactService {
         Contact contact = contactRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contact not found"));
 
-        User owner = userRepository.findByEmail(email)
+        User owner = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!contact.getOwner().equals(owner)) {
