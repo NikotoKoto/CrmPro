@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @Table(name="orders")
 public class Order {
 
+
+    public Order(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

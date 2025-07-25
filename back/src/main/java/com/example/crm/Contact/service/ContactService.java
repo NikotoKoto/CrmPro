@@ -1,6 +1,6 @@
 package com.example.crm.Contact.service;
 
-import com.example.crm.Company.controller.CompanyRepository;
+import com.example.crm.Company.repository.CompanyRepository;
 import com.example.crm.Company.entity.Company;
 import com.example.crm.Contact.dto.ContactResponseDto;
 import com.example.crm.Contact.dto.CreateContactRequestDto;

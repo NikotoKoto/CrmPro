@@ -1,7 +1,6 @@
-package com.example.crm.Company.controller;
+package com.example.crm.Company.repository;
 
 import com.example.crm.Company.entity.Company;
-import com.example.crm.User.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

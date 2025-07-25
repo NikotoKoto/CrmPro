@@ -9,6 +9,12 @@ import java.util.List;
 @Table(name="companies")
 public class Company {
 
+    public Company(){}
+
+    public Company(String name){
+        this.name = name;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
