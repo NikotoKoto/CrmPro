@@ -142,7 +142,7 @@ public class ContactServiceTest {
     }
 
     @Test
-    void ShouldDeleteContactSucessFully(){
+    void ShouldDeleteContactSuccessFully(){
         User user = new User();
         user.setId(1L);
         user.setEmail("Toto@gmail.com");

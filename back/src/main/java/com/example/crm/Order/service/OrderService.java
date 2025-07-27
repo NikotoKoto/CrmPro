@@ -89,8 +89,10 @@ public class OrderService {
 
         if(order.getUser().equals(user)){
             orderRepository.delete(order);
-        }
+        }else {
        throw new RuntimeException("Unauthorized");
+
+        }
     }
 
 }
