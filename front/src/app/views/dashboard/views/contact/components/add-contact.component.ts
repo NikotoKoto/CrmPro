@@ -81,8 +81,9 @@ initContactFormEffect = effect(()=> {
     if(contacts){
       const {name, email, phone, company} = contacts.find(c => c.id == contactId)!;
       this.contactForm.patchValue({
-        name,email,phone,company
+        name,email,phone,company: company
       })
+      console.log(this.contactForm)
     }else{
       this.initContactFormEffect.destroy();
     }

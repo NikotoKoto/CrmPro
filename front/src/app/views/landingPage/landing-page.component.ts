@@ -31,9 +31,46 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
         <app-auth-page id="signup-section"/>
       </div>
     </div>
-    <div class="img-container">
-      <img src="assets/screenshot.png" alt="screenshot" />
-    </div>
+    <section class="dashboard-info">
+  <h2>Découvrez le Dashboard (Projet de Portfolio)</h2>
+<p>
+  Ce projet est conçu comme une démonstration de mes compétences en développement web full-stack. 
+  Il s'agit d'une application CRM simplifiée, développée dans le cadre de mon portfolio. 
+  Certaines fonctionnalités peuvent être incomplètes ou en cours d'amélioration.
+</p>
+
+<p>
+  Pour accéder au tableau de bord, vous devez d'abord vous <strong>inscrire</strong> ou vous <strong>connecter</strong>. 
+  Une fois authentifié, vous pourrez visualiser et manipuler vos données via les APIs sécurisées.
+</p>
+
+<div class="cards">
+  <div class="card">
+    <h3>Gestion des clients</h3>
+    <p>
+      Ajoutez, modifiez ou supprimez vos clients grâce à l'API REST 
+      <code>/api/contacts</code>. Chaque opération est associée à votre compte utilisateur.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>Gestion des commandes</h3>
+    <p>
+      Créez et suivez vos commandes, et liez-les à vos clients via l'API 
+      <code>/api/orders</code>. Seul l'utilisateur propriétaire peut voir ou modifier ses données.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>Dashboard sécurisé</h3>
+    <p>
+      Accédez à une vue synthétique de vos clients et de vos commandes dans un tableau de bord 
+      protégé, accessible uniquement après authentification via JWT.
+    </p>
+  </div>
+</div>
+</section>
+
   `,
   styles: `
   :host{
@@ -115,22 +152,61 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
 }
 
 
-  .img-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  background-color: var(--section-bg);
-  padding: var(--spacing-md) var(--spacing-md);
-  padding-bottom: 0;
-  margin-bottom: 0;
+  
+.dashboard-info {
+  padding: 3rem 1rem;
+  text-align: center;
+  width:100%;
+  background-color: #f9fafb;
 }
-  .img-container img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  display: block;
+
+.dashboard-info h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
+
+.dashboard-info p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 2rem auto;
+}
+
+.cards {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  :hover{
+    transform: scale(1.05);
+  }
+}
+
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
 `,
 })
 export class LandingPageComponent {

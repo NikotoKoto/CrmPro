@@ -1,4 +1,5 @@
 export interface Order {
+    id:string,
     company: string,
     orderDate: string,
     orderStatus : string,

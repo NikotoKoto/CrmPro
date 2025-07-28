@@ -2,7 +2,7 @@ export interface ContactForm {
     name:string,
     email:string,
     phone:string,
-    company:string    
+    company:string;   
 }
 
 export interface Contact {
@@ -10,5 +10,5 @@ export interface Contact {
     name:string,
     email:string,
     phone:string,
-    company:string  
+    company: string;  
 }

@@ -1,38 +1,35 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { OrderService } from '../shared/service/order.service';
 import { OrderFormComponent } from './order-form.component';
+import { Order } from '../shared/interface/order';
 
 @Component({
   selector: 'app-orders-list',
   imports: [OrderFormComponent],
   template: `
-    <div class="order-grid">
-      @if(!isCollapse()){
-
-      <button class="btn btn-primary btn-add" (click)="addOrder()">+</button>
-      } @if(isCollapse()){
-      <app-order-form class="order-form" (formSubmitted)="onFormSubmitted()" />
-      }
-    
-    
+     <div class="order-grid">
       @for(order of orderList(); track $index){
-      <div class="card">
-        <ul>
-          <li class="order-detail"><strong>Entreprise: </strong>{{ order.company }}</li>
-          <li class="order-detail"><strong>Date: </strong>{{ order.orderDate }}</li>
-          <li class="order-detail"><strong>Status: </strong>{{ order.orderStatus }}</li>
-          <li class="order-detail"><strong>Commande: </strong> {{ order.orders }}</li>
-          <li class="order-detail"><strong>Total: </strong>{{ order.totalAmount }} €</li>
-        </ul>
-      </div>
+        <div class="card">
+          <button class="deleteButton" (click)="isDelete.emit(order.id)">❌</button>
+          <button class="editButton" (click)="isEdit.emit(order)">✏️</button>
+          <ul>
+            <li><strong>Entreprise:</strong> {{ order.company }}</li>
+            <li><strong>Date:</strong> {{ order.orderDate }}</li>
+            <li><strong>Status:</strong> {{ order.orderStatus }}</li>
+            <li><strong>Commande:</strong> {{ order.orders }}</li>
+            <li><strong>Total:</strong> {{ order.totalAmount }} €</li>
+          </ul>
+        </div>
       }
     </div>
+    
   `,
   styles: `
   :host{
     display:block;
     padding:1rem;
     width:100%;
+    ;
   }
 
   .order-form{
@@ -45,8 +42,37 @@ import { OrderFormComponent } from './order-form.component';
     height: 350px;
   }
   .card{
+    position:relative;
     width:200px;
     height:350px;
+  }
+
+  .editButton{
+    position:absolute;
+    left:10px;
+    top:3px;
+    background:none;
+    border: none;
+    cursor:pointer;
+
+     &:active{
+      transform:scale(0.95);
+    }
+  }
+
+  .deleteButton{
+    position:absolute;
+    right:10px;
+    top:3px;
+    background:none;
+    border: none;
+    cursor:pointer;
+
+    
+
+    &:active{
+      transform:scale(0.95);
+    }
   }
 
   .order-grid{
@@ -69,11 +95,11 @@ export class OrdersListComponent {
   private OrderService = inject(OrderService);
   orderList = this.OrderService.currentOrder;
   isCollapse = signal(false);
+  editingOrderId = signal<string | null>(null);
+  isEdit = output<Order>();
+  isDelete= output<string>();
 
-  addOrder() {
-    this.isCollapse.set(true);
-  }
-  onFormSubmitted() {
-    this.isCollapse.set(false);
-  }
+ 
+
+ 
 }
