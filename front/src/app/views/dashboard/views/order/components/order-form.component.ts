@@ -1,7 +1,7 @@
 import { OrderService } from './../shared/service/order.service';
-import { Component, inject, input, output } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { OrderForm } from '../shared/interface/order';
+import { Order, OrderForm } from '../shared/interface/order';
 
 @Component({
   selector: 'app-order-form',
@@ -9,9 +9,9 @@ import { OrderForm } from '../shared/interface/order';
   template: `
     <form [formGroup]="orderForm" (ngSubmit)="submit()">
       <div class="flex flex-col">
-        <div class="mb-20 flex flex-col">
+        <div class="mb-20 flex flex-col" formGroupName="company">
           <label for="company">Nom de l'entreprise</label>
-          <input formControlName="company" type="text" id="company" />
+          <input formControlName="name" type="text" id="company" />
         </div>
         <div class="mb-20 flex flex-col">
           <label for="orderDate">Date</label>
@@ -21,11 +21,9 @@ import { OrderForm } from '../shared/interface/order';
           <label for="orderStatus">Status</label>
           <select formControlName="orderStatus" type="range" id="orderStatus">
             <option value="PENDING">PENDING</option>
-            <option value="SHIPPED">SHIPPED  </option>
-            <option value="CANCELED">CANCELED </option>
-            <option value="DELIVERED">DELIVERED  </option>
-            <option value="CANCELED">CANCELED  </option>
-   
+            <option value="SHIPPED">SHIPPED</option>
+            <option value="CANCELED">CANCELED</option>
+            <option value="DELIVERED">DELIVERED</option>
           </select>
         </div>
         <div class="mb-20 flex flex-col">
@@ -36,7 +34,12 @@ import { OrderForm } from '../shared/interface/order';
           <label for="totalAmount">Montant</label>
           <input formControlName="totalAmount" type="number" id="totalAmount" />
         </div>
-        <button class="btn btn-primary">Ajouter</button>
+        @if(order()){
+          <button class="btn btn-primary">Modifier</button>
+        }@else {
+
+          <button class="btn btn-primary">Ajouter</button>
+        }
       </div>
     </form>
   `,
@@ -44,20 +47,60 @@ import { OrderForm } from '../shared/interface/order';
 })
 export class OrderFormComponent {
   private fb = inject(FormBuilder);
-  private orderService = inject(OrderService);
-  formSubmitted = output<void>();
-  
+  formSubmitted = output<OrderForm | Order>();
+  order = input<Order | null>(null)
+
   orderForm = this.fb.group({
-    company: ['', Validators.required],
-    orderDate: ['', [Validators.required, Validators.email]],
-    orderStatus: ['pending'],
-    orders:['',Validators.required],
+    company: this.fb.group({
+      id: [''],
+      name: ['', Validators.required],
+    }),
+    orderDate: ['', [Validators.required]],
+    orderStatus: ['PENDING',[Validators.required]],
+    orders: ['', Validators.required],
     totalAmount: ['', Validators.required],
   });
 
-  submit() {
+
+    initOrderEffect = effect(() => {
+      const currentOrder = this.order();
+      console.log(currentOrder)
+      if (currentOrder) {
+       this.orderForm.patchValue({
+      company: {
+        id: currentOrder.company.id,
+         name: typeof currentOrder.company === 'string' ? currentOrder.company : currentOrder.company.name,
+      },
+      orderDate: currentOrder.orderDate,
+      orderStatus: currentOrder.orderStatus,
+      orders: currentOrder.orders,
+      totalAmount: currentOrder.totalAmount,
+    });
+      } else {
+        
+        this.orderForm.reset({
+          company: { id: '', name: '' },
+          orderDate: '',
+          orderStatus: 'PENDING',
+          orders: '',
+          totalAmount: "0",
+        });
+      }
+    });
+  
+
+    submit() {
     const orderForm: OrderForm = this.orderForm.getRawValue() as OrderForm;
-    this.orderService.addOrder(orderForm);
-    this.formSubmitted.emit();
+    if(this.order()){
+      const updateOrder: Order = {
+        ...orderForm,
+        id: this.order()!.id
+      }
+      this.formSubmitted.emit(updateOrder)
+      console.log(updateOrder)
+    }else{
+
+      this.formSubmitted.emit(orderForm);
+    }
   }
 }

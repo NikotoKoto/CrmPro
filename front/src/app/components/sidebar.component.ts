@@ -50,54 +50,88 @@ import {
     </nav>
   `,
   styles: `
-  :host{
-    display:flex;
-    flex: 1 1 auto;
-    color: white;
-    flex-direction:column;
-    background-color: var(--dark-grey);
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 5;
+:host {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark-grey);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  color: white;
+  width: 250px;
+  min-height: 100vh;
+  z-index: 5;
+}
+
+.dashboard-a:hover {
+  color: white;
+}
+
+li {
+  display: flex;
+  justify-content: center;
+  color: var(--primary-hex);
+  width: 100%;
+  padding: 10px 0;
+  border: 1px solid transparent;
+}
+
+li:hover {
+  background-color: var(--white);
+  color: var(--primary-hex);
+  border: 1px solid var(--primary-hex);
+  cursor: pointer;
+}
+
+hr {
+  margin-top: 20px;
+  border: 1px solid var(--grey);
+  width: 100%;
+}
+
+.sidebar-title {
+  font-size: 25px;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: var(--primary-hex);
+  cursor: pointer;
+}
+
+.sidebar-option {
+  color: var(--grey);
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  :host {
+    flex-direction: row;
+    width: 100%;
+    min-height: auto;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
   }
 
-  .dashboard-a:hover{
-    color: white;
+  li {
+    padding: 10px;
+    border: none;
+    width: auto;
   }
-  
-  li{
-    display:flex;
-    justify-content: center;
-    color:var(--primary-hex);
-    width:100%;
-    padding: 10px 0;
-    border: 1px solid transparent;
+
+  li:hover {
+  background-color: var(--white);
+  color: var(--primary-hex);
+  border: 1px solid var(--primary-hex);
+  cursor: pointer;
+}
+
+  .sidebar-title {
+    display: none; /* cache le titre sur petit écran */
   }
-  li:hover{
-    display:flex;
-    color: var(--primary-hex);
-    justify-content: center;
-    background-color:var(--white);  
-    width: 100%;
-    padding: 10px 0;
-    cursor:pointer;
-    border: 1px solid var(--primary-hex);
+
+  hr {
+    display: none;
   }
-  
-  hr{
-    margin-top: 20px;
-    border: 1px solid var(--grey);
-    width:100%;
-  }
-  .sidebar-title{
-    font-size: 25px;
-    padding:  15px;
-    border-radius: 15px;
-    background-color:var(--primary-hex);
-    cursor:pointer;
-  }
-  .sidebar-option{
-    color:var(--grey);
-  }`,
+}`,
 })
 export class SidebarComponent {
   readonly LayoutDashboard =LayoutDashboard;

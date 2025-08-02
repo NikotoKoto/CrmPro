@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactService } from '../shared/service/contact.service';
 import { Contact, ContactForm } from '../shared/interface/contact.interface';
@@ -28,11 +28,11 @@ import { Contact, ContactForm } from '../shared/interface/contact.interface';
             <label for="phone">Téléphone du client</label>
           <input formControlName="phone" type="tel" id="phone"/>
           </div>
-          <div class="mb-20 flex flex-col">
+          <div formGroupName="company" class="mb-20 flex flex-col">
             <label for="company">Entreprise</label>
-          <input formControlName="company" type="text" id="company"/>
+          <input formControlName="name" type="text" id="company"/>
           </div>
-          @if(this.contactId){
+          @if(contactId()){
             <button class="btn btn-primary" type="submit" [disabled]="contactForm.invalid">Modifier</button>
 
           }@else{
@@ -66,12 +66,15 @@ export class AddContactComponent {
 contactService =inject(ContactService)
   private fb = inject(FormBuilder);
   contact = this.contactService.currentContact;
-  contactId = this.contactService.currentEditingContactId();
+  contactId = input<string | null>();
   contactForm = this.fb.group({
     name:['',Validators.required],
     email:['',[Validators.required, Validators.email]],
     phone:[''],
-    company:['',Validators.required]
+    company: this.fb.group({
+      id:[''],
+      name:['', Validators.required]
+    })
   })
 
 initContactFormEffect = effect(()=> {
@@ -81,11 +84,22 @@ initContactFormEffect = effect(()=> {
     if(contacts){
       const {name, email, phone, company} = contacts.find(c => c.id == contactId)!;
       this.contactForm.patchValue({
-        name,email,phone,company: company
+        name,
+        email,
+        phone,
+        company: {
+          id: company?.id ?? '',
+          name: company?.name ??''
+        }
       })
-      console.log(this.contactForm)
+      
     }else{
-      this.initContactFormEffect.destroy();
+      this.contactForm.reset({
+          name: '',
+          email: '',
+          phone: '',
+          company: { id: '', name: '' }
+        });
     }
   }
 })

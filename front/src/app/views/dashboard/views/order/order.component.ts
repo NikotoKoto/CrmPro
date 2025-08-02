@@ -1,20 +1,22 @@
-import { Component, input, signal } from '@angular/core';
+import { OrderService } from './shared/service/order.service';
+import { Component, inject, input, signal } from '@angular/core';
 import { OrdersListComponent } from "./components/orders-list.component";
-import { Order } from './shared/interface/order';
+import { Order, OrderForm } from './shared/interface/order';
+import { OrderFormComponent } from "./components/order-form.component";
 
 @Component({
   selector: 'app-order',
-  imports: [OrdersListComponent],
+  imports: [OrdersListComponent, OrderFormComponent],
   template: `
    
       <h2 class="text-xxl text-bold  my-10">📦 Les commandes </h2>
       <button (click)="onAdd()"> Add</button>
       @if(showForm()){
         <app-order-form
-        [order]="editingOrder()"
-        (formSubmitted)="onFormSubmitted()"/>
+        [order]="currentOrderEditing()"
+        (formSubmitted)="onFormSubmitted($event)"/>
       }
-      <app-orders-list (isEdit)="isEdit($event)" (isDelete)="isDelete($event)"/>
+      <app-orders-list (isEdit)="onEditClick($event)" (isDelete)="onDelete($event)"/>
   `,
   styles: `
   :host{
@@ -23,27 +25,43 @@ import { Order } from './shared/interface/order';
     align-items:center;
     gap: 50px;
 
+    .order-grid{
+     display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  }
+
   }`
 })
 export class OrderComponent {
-showForm = signal(false);
-editingOrder = signal<Order | null> (null);
+  private orderService = inject(OrderService);
+  showForm = signal(false);
+  currentOrderEditing = this.orderService.currentEditingOrder;
 
-onFormSubmitted() {
-    this.showForm.set(false);
-    this.editingOrder.set(null);
-  }
+  onEditClick(orderToEdit: Order) {  
+  this.currentOrderEditing.set(orderToEdit); 
+  this.showForm.set(true);            
+}
 
 onAdd(){
-  this.editingOrder.set(null);
+  this.currentOrderEditing.set(null);
   this.showForm.set(true);
 }
 
- isDelete(id: string){
-    this.OrderService.deleteOrder(id)
+ onDelete(id: string){
+    this.orderService.deleteOrder(id)
   }
 
-  isEdit(updateOrder: Order){
-    this.OrderService.editOrder(updateOrder)
+  onFormSubmitted(order: Order | OrderForm) {
+    console.log("trigger:" , order)
+    if('id' in order){
+      console.log("Mod Edit")
+      this.orderService.editOrder(order)
+    }else{
+      console.log("ModAdd")
+      this.orderService.addOrder(order)
+    }
+    this.showForm.set(false);
+    this.currentOrderEditing.set(null);
   }
 }

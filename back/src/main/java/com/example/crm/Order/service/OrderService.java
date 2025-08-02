@@ -32,7 +32,7 @@ public class OrderService {
     public OrderResponseDto createOrder(CreateOrderRequestDto dto, String email){
         User user =  userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(()-> new RuntimeException("User not found"));
-        Company company = companyRepository.findByName(dto.getCompany())
+        Company company = companyRepository.findByName(dto.getCompany().getName())
                 .orElseThrow(()-> new RuntimeException("Company not found"));
         Order order = OrderMapper.toEntity(dto, company);
         order.setUser(user);
@@ -67,8 +67,7 @@ public class OrderService {
     public OrderResponseDto updateOrder(Long id , String email , UpdateOrderRequestDto dto){
         Order order = orderRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Order not found"));
-
-        Company company = companyRepository.findByName(dto.getCompany())
+        Company company = companyRepository.findByName(dto.getCompany().getName())
                 .orElseThrow(()-> new RuntimeException("Company not found"));
         User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(()-> new RuntimeException("User not found"));

@@ -31,10 +31,10 @@ public class ContactService {
         User owner = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Company company = companyRepository.findByName(dto.getCompany())
+        Company company = companyRepository.findByName(dto.getCompany().getName())
                 .orElseGet(()-> {
                     Company newCompany = new Company();
-                    newCompany.setName(dto.getCompany());
+                    newCompany.setName(dto.getCompany().getName());
                     return companyRepository.save(newCompany);
                 });
         Contact contact = ContactMapper.toEntity(dto, company);
@@ -73,7 +73,7 @@ public class ContactService {
         if (!contact.getOwner().equals(owner)) {
             throw new RuntimeException("Unauthorized");
         }
-        Company company = companyRepository.findByName(dto.getCompany())
+        Company company = companyRepository.findByName(dto.getCompany().getName())
                 .orElseThrow(()-> new RuntimeException("Company not found"));
 
         ContactMapper.toEntity(dto, contact, company);

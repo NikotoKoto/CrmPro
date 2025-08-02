@@ -1,16 +1,13 @@
-export interface Order {
-    id:string,
-    company: string,
-    orderDate: string,
-    orderStatus : string,
-    orders: string,
-    totalAmount: string,
+export interface Order extends OrderForm {
+  id: string;
 }
-
 
 export interface OrderForm{
     
-    company: string,
+     company: {
+    id: string | null;
+    name: string;
+  };
     orderDate: string,
     orderStatus : string,
     orders : string,

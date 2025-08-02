@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { DashboardService } from '../../../shared/services/dashboard.service';
-import { ContactService } from '../shared/service/contact.service';
+import { Component, input, output } from '@angular/core';
 import { LucideAngularModule,Delete,SquarePen } from "lucide-angular";
 import { RouterLink } from '@angular/router';
+import { Contact } from '../shared/interface/contact.interface';
 
 @Component({
   selector: 'app-contact-list',
@@ -22,15 +21,15 @@ import { RouterLink } from '@angular/router';
     </tr>
   </thead>
   <tbody>
-     @for(contact of currentContacts(); track contact.id){
+     @for(contact of contacts(); track contact.id){
     <tr>
       <td>{{ contact.name }}</td>
       <td>{{ contact.email }}</td>
       <td>{{ contact.phone }}</td>
       <td>{{ contact.company.name }}</td>
       <td>
-        <button (click)="editContact(contact.id)"><lucide-icon [img]="SquarePen" class="icon blue"/></button>
-        <button (click)="deleteContact(contact.id)"><lucide-icon [img]="Delete" class="icon red"/></button>
+        <button (click)="isEdit.emit(contact.id)"><lucide-icon [img]="SquarePen" class="icon blue"/></button>
+        <button (click)="isDelete.emit(contact.id)"><lucide-icon [img]="Delete" class="icon red"/></button>
       </td>
     </tr>
      }
@@ -85,15 +84,7 @@ button {
 export class ContactListComponent {
   readonly Delete = Delete;
   readonly SquarePen = SquarePen;
-private contactService = inject(ContactService);
-
-currentContacts = this.contactService.currentContact;
-
-editContact(contactId : string){
-this.contactService.setEditingContact(contactId);
-// console.log("id", contactId)
-}
-deleteContact(contactId : string){
-this.contactService.deleteContact(contactId);
-}
+contacts = input<Contact[]>();
+isEdit = output<string>();
+isDelete = output<string>();
 }

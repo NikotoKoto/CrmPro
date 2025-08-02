@@ -13,11 +13,11 @@ import { Order } from '../shared/interface/order';
           <button class="deleteButton" (click)="isDelete.emit(order.id)">❌</button>
           <button class="editButton" (click)="isEdit.emit(order)">✏️</button>
           <ul>
-            <li><strong>Entreprise:</strong> {{ order.company }}</li>
-            <li><strong>Date:</strong> {{ order.orderDate }}</li>
-            <li><strong>Status:</strong> {{ order.orderStatus }}</li>
-            <li><strong>Commande:</strong> {{ order.orders }}</li>
-            <li><strong>Total:</strong> {{ order.totalAmount }} €</li>
+            <li class="order-detail"><strong>Entreprise:</strong> {{ order.company }}</li>
+            <li class="order-detail"><strong>Date:</strong> {{ order.orderDate }}</li>
+            <li class="order-detail"><strong>Status:</strong> {{ order.orderStatus }}</li>
+            <li class="order-detail"><strong>Commande:</strong> {{ order.orders }}</li>
+            <li class="order-detail"><strong>Total:</strong> {{ order.totalAmount }} €</li>
           </ul>
         </div>
       }
@@ -29,7 +29,7 @@ import { Order } from '../shared/interface/order';
     display:block;
     padding:1rem;
     width:100%;
-    ;
+    
   }
 
   .order-form{
@@ -98,6 +98,7 @@ export class OrdersListComponent {
   editingOrderId = signal<string | null>(null);
   isEdit = output<Order>();
   isDelete= output<string>();
+  
 
  
 

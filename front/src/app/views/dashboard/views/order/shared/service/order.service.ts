@@ -11,7 +11,7 @@ currentOrderResource = resource({
 })
 
 currentOrder = computed(()=> this.currentOrderResource.value())
-
+currentEditingOrder = signal<Order | null> (null);
   async addOrder(orderForm : OrderForm){
     try{
 const response = await fetch(`${API_ORDER}`,{
@@ -60,6 +60,7 @@ if(response.ok){
       )
        const data = await response.json();
        if(response.ok){
+         this.currentOrderResource.reload()
         return data;
        }else{
         throw new Error("Oops")

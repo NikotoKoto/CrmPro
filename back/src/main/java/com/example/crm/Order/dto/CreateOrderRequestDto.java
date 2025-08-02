@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CreateOrderRequestDto {
-    private String company;
+    private Company company;
     private LocalDate orderDate;
     private OrderStatus orderStatus;
     private String orders;
@@ -18,10 +18,10 @@ public class CreateOrderRequestDto {
 
 
 
-    public String getCompany(){
+    public Company getCompany(){
         return company;
     }
-    public void setCompany  (String company){
+    public void setCompany  (Company company){
         this.company = company;
     }
     public LocalDate getOrderDate(){

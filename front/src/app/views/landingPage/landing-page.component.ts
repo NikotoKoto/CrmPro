@@ -17,7 +17,7 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
     </div>
 
     <div class="landing-section">
-      <h3 class="text-lg">Curieux? Essayez-nous gratuitement en vous inscrivant</h3>
+      <h3 class="text-landing text-lg">Curieux? Essayez-nous gratuitement en vous inscrivant</h3>
       <div class="landing-grid">
         <ul class="features-list">
         @for(feature of features(); track $index){
@@ -73,67 +73,86 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
 
   `,
   styles: `
-  :host{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+  :host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  }
-  
-  .discoverySection{
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(
-    to bottom,
-    white 0%,
-    #f9f9f9 30%,
-    var(--section-bg) 100%
-  );
-    padding: var(--spacing-xl) var(--spacing-md);
-    text-align:center;
-    height:800px;
-  }
-  .title{
-    
-    max-width: 600px; 
+/* Section découverte */
+.discoverySection {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, white 0%, #f9f9f9 30%, var(--section-bg) 100%);
+  padding: var(--spacing-xl) var(--spacing-md);
+  text-align: center;
+  height: auto;
+  min-height: 600px;
+}
+
+.title {
+    max-width: 600px;
   line-height: 1.2;
   word-break: break-word;
   text-align: center;
-  }
+}
 
-  .landing-section{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    padding:  var(--spacing-md);
-  }
-  .landing-grid{
-    width:100%;
-    background-color: var(--background-color);
-    padding: 0 var(--spacing-md) var(--spacing-xl) 0;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
+/* Section centrale */
+.landing-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  width: 100%;
+}
+.text-landing{
+  text-align:center;
+}
 
-  }
-  .features-list {
+.landing-grid {
+  width: 100%;
+  background-color: var(--background-color);
+  padding: var(--spacing-md);
   display: grid;
-  grid-template-columns: repeat(2, minmax(400px, 1fr));
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  max-width: 1200px;
+}
+
+/* Mobile & tablette */
+@media (max-width: 767px) {
+  .landing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-list {
+    grid-template-columns: 1fr;
+  }
+
+  .features-list li {
+    text-align: center;
+  }
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--spacing-lg);
   padding: var(--spacing-md);
-
 }
+
 .features-list li {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: center;
   font-size: var(--font-size-lg);
   gap: var(--spacing-sm);
-  padding: var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-md);
 }
+
 .features-list li span {
   font-size: 2.5rem;
 }
@@ -146,17 +165,16 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
 
 .features-list li p {
   margin: 0;
-  text-align:justify;
+  text-align: justify;
   font-size: var(--font-size-sm);
   color: var(--text-muted);
 }
 
-
-  
+/* Section dashboard */
 .dashboard-info {
   padding: 3rem 1rem;
   text-align: center;
-  width:100%;
+  width: 100%;
   background-color: #f9fafb;
 }
 
@@ -177,13 +195,22 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
   gap: 1.5rem;
   max-width: 1000px;
   margin: 0 auto;
+}
 
-  :hover{
-    transform: scale(1.05);
+/* Responsive cards */
+@media (max-width: 767px) {
+  .cards {
+    grid-template-columns: 1fr;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
   .cards {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -194,6 +221,11 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .card h3 {
@@ -206,6 +238,7 @@ import { AuthPageComponent } from '../authPage/auth-page.component';
   font-size: 0.95rem;
   line-height: 1.4;
 }
+
 
 `,
 })
