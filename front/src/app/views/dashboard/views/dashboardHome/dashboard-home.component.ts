@@ -1,16 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../../shared/services/auth.service';
-import { DashboardChartComponent } from "./components/dashboard-chart.component";
+import { ContactService } from '../contact/shared/service/contact.service';
+import { OrderService } from '../order/shared/service/order.service';
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [DashboardChartComponent],
-  template: ` <h2 class="text-center">Bienvenue {{ user().firstname }} sur ton dashboard</h2>
-  <div class="layout mt-20">
-    <app-dashboard-chart/> 
+  imports: [],
+  template: ` <h2 class="text-center">Bienvenue {{ user()?.firstname }} sur ton dashboard</h2>
+  <div class="layout mt-20">  
     <div class="card flex flex-col">
-      <p>Nombre de clients</p>
-      <p>25000</p>
+      <p class="flex justify-center">Nombre de clients:</p>
+      <p class="flex justify-center">{{currentContact()?.length || 0}}</p>
+    </div>
+
+    <div class="card flex flex-col">
+      <p class="flex justify-center">Nombre de commandes:</p>
+      <p class="flex justify-center">{{currentOrder()?.length || 0}}</p>
     </div>
     </div>
     `,
@@ -29,6 +34,10 @@ import { DashboardChartComponent } from "./components/dashboard-chart.component"
   }`,
 })
 export class DashboardHomeComponent {
-  AuthService = inject(AuthService);
+  private AuthService = inject(AuthService);
+  private contactService = inject(ContactService);
+  private orderService = inject(OrderService);
+  currentOrder = this.orderService.currentOrder;
+  currentContact = this.contactService.currentContact;
   user = this.AuthService.currentUser;
 }

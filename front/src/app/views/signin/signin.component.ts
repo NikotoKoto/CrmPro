@@ -38,22 +38,92 @@ import { Router } from '@angular/router';
       </form>
   `,
   styles: `
-  :host{
-    flex:1;
-    background-color : var(--section-bg);
-    display:flex;
-    flex-direction: column;
-    justify-content:center;
-    align-items:center;
-  }
+  :host {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--section-bg);
+  padding: 1rem;
+}
+
+form {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+}
+
+.error {
+  color: var(--danger);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+a {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--primary);
+  cursor: pointer;
+  text-align: center;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
   form {
-      padding: 24px;
-      border-radius: 8px;
-      background-color: #fff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }`
+    padding: 1.5rem;
+    gap: 0.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+`
 })
 export class SigninComponent {
 private fb = inject(FormBuilder)

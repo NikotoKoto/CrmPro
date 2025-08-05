@@ -39,7 +39,7 @@ public class AuthService {
      * et retourne un JWT s'il est valide
      */
     public AuthResponse login(AuthRequest request){
-        User user = userRepository.findByEmail(request.email())
+        User user = userRepository.findByEmailIgnoreCase(request.email())
         .orElseThrow(() -> new RuntimeException("Invalids Credentials"));
     if(!passwordEncoder.matches(request.password(), user.getPassword())){
         throw new RuntimeException("Invalid password");

@@ -65,11 +65,11 @@ export class ContactService {
       body: JSON.stringify(restContact),
       credentials: 'include'
     })
-    const body = await response.json();
     if(response.ok){
       this.currentContactResource.reload();
+      return await response.json();
     }else{
-      throw new Error(body)
+      throw new Error("Oops")
     }
   }
 

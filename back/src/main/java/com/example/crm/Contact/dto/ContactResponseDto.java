@@ -1,11 +1,13 @@
 package com.example.crm.Contact.dto;
 
+import com.example.crm.Company.entity.Company;
+
 public class ContactResponseDto {
     private Long id;
     private String email;
     private String name;
     private String phone;
-    private String company;
+    private Company company;
 
 
     public Long getId (){
@@ -44,11 +46,11 @@ public class ContactResponseDto {
     }
 
     //Getter & setter company
-    public String getCompany (){
+    public Company getCompany (){
         return company;
     }
 
-    public void setCompany(String company){
+    public void setCompany(Company company){
         this.company = company;
     }
 }

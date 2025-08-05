@@ -15,8 +15,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public UserResponseDto getMe(String email){
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getName());
+        return new UserResponseDto(user.getId(), user.getEmail(), user.getFirstname());
     }
 }
