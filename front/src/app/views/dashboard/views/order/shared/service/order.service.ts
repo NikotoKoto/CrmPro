@@ -1,7 +1,8 @@
+import { environment } from '../../../../../../../environments/environment';
 import { Order, OrderForm } from './../interface/order';
 import { computed, Injectable, resource, signal } from '@angular/core';
 
-const API_ORDER = 'http://localhost:8080/orders';
+const API_ORDER = `${environment.apiUrl}/orders`;
 @Injectable({
   providedIn: 'root'
 })

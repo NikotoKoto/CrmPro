@@ -1,8 +1,9 @@
 import { computed, Injectable, resource, signal } from '@angular/core';
 import { Contact, ContactForm } from '../interface/contact.interface';
+import { environment } from '../../../../../../../environments/environment';
 
 
-const API_CONTACT = 'http://localhost:8080/contacts';
+const API_CONTACT = `${environment.apiUrl}/contacts`;
 @Injectable({
   providedIn: 'root'
 })

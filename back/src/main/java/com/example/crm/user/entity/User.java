@@ -1,6 +1,6 @@
 package com.example.crm.User.entity;
 
-import com.example.crm.Contact.entity.Contact;
+import com.example.crm.contact.entity.Contact;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

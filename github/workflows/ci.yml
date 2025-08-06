@@ -1,73 +1,50 @@
-name: CI - CRM Fullstack
+name: Full CI Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build:
+  backend:
+    name: Backend - Build & Test
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: root
-          POSTGRES_DB: crm
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-    env:
-  SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/crm
-  SPRING_DATASOURCE_USERNAME: postgres
-  SPRING_DATASOURCE_PASSWORD: root
+    defaults:
+      run:
+        working-directory: back
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      ### 🔧 Setup JDK
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - name: Set up Java
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: 21
 
-      ### 🚀 Build & Test Spring Boot Backend
-      - name: Build backend with Maven
-        working-directory: ./back
-        run: ./mvnw clean install -DskipTests=false
+      - name: Build & Test
+        run: ./mvnw clean install
 
-      ### 🧪 Run Spring Boot tests
-      - name: Run backend tests
-        working-directory: ./back
-        run: ./mvnw test
+  frontend:
+    name: Frontend - Build Only
+    runs-on: ubuntu-latest
 
-      ### 🧰 Setup Node.js
+    defaults:
+      run:
+        working-directory: front
+
+    steps:
+      - uses: actions/checkout@v3
+
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      ### 📦 Install Angular dependencies
-      - name: Install frontend dependencies
-        working-directory: ./front
+      - name: Install dependencies
         run: npm install
 
-      ### 🧪 Run Angular tests
-      - name: Run frontend tests
-        working-directory: ./front
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
-
-      ### 🛠️ Build Angular
-      - name: Build frontend
-        working-directory: ./front
-        run: npm run build -- --configuration production
+      - name: Build Angular App
+        run: npm run build

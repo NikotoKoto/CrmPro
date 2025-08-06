@@ -3,9 +3,10 @@ import { loginForm, User } from './../interfaces/user.interfaces';
 
 import { computed, inject, Injectable, resource } from '@angular/core';
 import { UserForm } from '../interfaces/user.interfaces';
+import { environment } from '../../../environments/environment';
 
-const API_AUTH = 'http://localhost:8080/auth';
-const API_USER = 'http://localhost:8080/users'
+const API_AUTH = `${environment.apiUrl}/auth`;
+const API_USER = `${environment.apiUrl}/users`;
 @Injectable({
   providedIn: 'root',
 })
