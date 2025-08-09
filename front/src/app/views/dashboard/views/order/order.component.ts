@@ -10,7 +10,7 @@ import { OrderFormComponent } from "./components/order-form.component";
   template: `
    
       <h2 class="text-xxl text-bold  my-10">📦 Les commandes </h2>
-      <button (click)="onAdd()"> Add</button>
+      <button class="btn btn-primary" (click)="onAdd()"> Add</button>
       @if(showForm()){
         <app-order-form
         [order]="currentOrderEditing()"

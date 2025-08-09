@@ -4,13 +4,6 @@ import {
   LucideAngularModule,
   User,
   ShoppingCart,
-  BarChart,
-  FileText,
-  MessageCircle,
-  Store,
-  Mail,
-  CreditCard,
-  Wrench,
   LayoutDashboard,
 } from 'lucide-angular';
 
@@ -29,24 +22,7 @@ import {
       <ul class="flex flex-col items-center gap-20">
         <li><lucide-icon [img]="User" class="icon" /><a routerLink="/dashboard/contacts">Contact</a></li>
         <li><lucide-icon [img]="ShoppingCart" class="icon" /><a routerLink="/dashboard/order">Commandes</a></li>
-        <li><lucide-icon [img]="BarChart" class="icon" /><a>Chiffres d'affaire</a></li>
-        <li><lucide-icon [img]="FileText" class="icon" /><a>Documents</a></li>
-      </ul>
-      <hr />
-
-      <h3 class="flex justify-center mb-20 mt-20 sidebar-option">Connexion</h3>
-      <ul class="flex flex-col items-center gap-20">
-        <li><lucide-icon [img]="MessageCircle" class="icon" /><a>Chat</a></li>
-        <li><lucide-icon [img]="Store" class="icon" /><a>Marché</a></li>
-        <li><lucide-icon [img]="Mail" class="icon" /><a>Email</a></li>
-      </ul>
-      <hr />
-
-      <h3 class="flex justify-center mb-20 mt-20 sidebar-option">Client</h3>
-      <ul class="flex flex-col items-center gap-20">
-        <li><lucide-icon [img]="CreditCard" class="icon" /><a>Transaction</a></li>
-        <li><lucide-icon [img]="Wrench" class="icon" /><a>Maintenance</a></li>
-      </ul>
+</ul>
     </nav>
   `,
   styles: `
@@ -137,14 +113,5 @@ export class SidebarComponent {
   readonly LayoutDashboard =LayoutDashboard;
   readonly User =User;
   readonly ShoppingCart =ShoppingCart;
-  readonly FileText =FileText;
-  readonly BarChart = BarChart;
-  readonly MessageCircle =MessageCircle;
-  readonly Store =Store;
-  readonly Mail =Mail;
-  readonly CreditCard =CreditCard;
-  readonly Wrench =Wrench;
-
-
 
 }

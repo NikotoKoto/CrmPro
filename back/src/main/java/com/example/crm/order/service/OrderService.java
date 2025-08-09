@@ -18,80 +18,79 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    private OrderRepository orderRepository;
-    private UserRepository userRepository;
-    private CompanyRepository companyRepository;
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
 
     @Autowired
-    public OrderService( OrderRepository orderRepository, CompanyRepository companyRepository, UserRepository userRepository){
+    public OrderService(OrderRepository orderRepository,
+                        CompanyRepository companyRepository,
+                        UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
     }
 
     public OrderResponseDto createOrder(CreateOrderRequestDto dto, String email){
-        User user =  userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(()-> new RuntimeException("User not found"));
-        Company company = companyRepository.findByName(dto.getCompany().getName())
-                .orElseThrow(()-> new RuntimeException("Company not found"));
-        Order order = OrderMapper.toEntity(dto, company);
-        order.setUser(user);
-        Order orderSaved = orderRepository.save(order);
-        return OrderMapper.toDto(orderSaved);
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        Company company = companyRepository.findByName(dto.getCompany().getName())
+                .orElseThrow(() -> new RuntimeException("Company not found"));
+
+        Order order = OrderMapper.toEntity(dto, company);
+        order.setUser(user); // 👈 ownership forcée
+        return OrderMapper.toDto(orderRepository.save(order));
     }
 
-    public List<OrderResponseDto> getOrderByUser (String email){
-        User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(()-> new RuntimeException("User not found"));
-        return orderRepository.findByUser(user)
+    public List<OrderResponseDto> getOrderByUser(String email){
+        Long uid = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("User not found"))
+                .getId();
+
+        return orderRepository.findByUserId(uid)
                 .stream()
-                .map(OrderMapper :: toDto)
+                .map(OrderMapper::toDto)
                 .toList();
     }
 
-    public OrderResponseDto getOrderById(Long id,String email){
-        Order order = orderRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Order not found"));
+    public OrderResponseDto getOrderById(Long id, String email){
+        Long uid = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("User not found"))
+                .getId();
 
-        User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+        Order order = orderRepository.findByIdAndUserId(id, uid)
+                .orElseThrow(() -> new RuntimeException("Order not found or not yours"));
 
-        if(!order.getUser().equals(user)){
-            throw new RuntimeException("User not equals");
-        }
         return OrderMapper.toDto(order);
-
     }
 
-    public OrderResponseDto updateOrder(Long id , String email , UpdateOrderRequestDto dto){
-        Order order = orderRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Order not found"));
+    public OrderResponseDto updateOrder(Long id, String email, UpdateOrderRequestDto dto){
+        Long uid = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("User not found"))
+                .getId();
+
         Company company = companyRepository.findByName(dto.getCompany().getName())
-                .orElseThrow(()-> new RuntimeException("Company not found"));
-        User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Company not found"));
 
-        if(!order.getUser().equals(user)){
-            throw new RuntimeException("User doesnt equals");
-        }
-         Order updated = OrderMapper.toEntity(dto, company,order);
-        Order saved = orderRepository.save(updated);
-        return OrderMapper.toDto(saved);
+        // 👇 sécurise l'accès : uniquement si la commande appartient à l'utilisateur
+        Order order = orderRepository.findByIdAndUserId(id, uid)
+                .orElseThrow(() -> new RuntimeException("Order not found or not yours"));
+
+        Order updated = OrderMapper.toEntity(dto, company, order); // ne pas toucher order.setUser
+        return OrderMapper.toDto(orderRepository.save(updated));
     }
 
-    public void DeleteOrder (Long id, String email){
-        Order order = orderRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Order not found "));
-        User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+    public void DeleteOrder(Long id, String email){
+        Long uid = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("User not found"))
+                .getId();
 
-        if(order.getUser().equals(user)){
-            orderRepository.delete(order);
-        }else {
-       throw new RuntimeException("Unauthorized");
+        // 👇 même règle : ne supprime que si c'est à moi
+        Order order = orderRepository.findByIdAndUserId(id, uid)
+                .orElseThrow(() -> new RuntimeException("Order not found or not yours"));
 
-        }
+        orderRepository.delete(order);
     }
-
 }
+

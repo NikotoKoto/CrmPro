@@ -107,7 +107,7 @@ export class AuthPageComponent {
     const userForm: UserForm = this.userForm.getRawValue() as UserForm;
     try {
       await this.authService.register(userForm);
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/dashboard');
       this.userForm.reset();
     } catch (error) {
       console.error("Erreur lors de l'inscription", error);

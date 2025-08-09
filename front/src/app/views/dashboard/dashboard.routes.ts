@@ -19,14 +19,4 @@ export const dashboardRoutes: Routes = [
     loadComponent: async () =>
       (await import('./views/order/order.component')).OrderComponent,
   },
-  {
-    path: 'chiffres',
-    loadComponent: async () =>
-      (await import('./views/sales.component')).SalesComponent,
-  },
-  {
-    path: 'documents',
-    loadComponent: async () =>
-      (await import('./views/docs.component')).DocsComponent,
-  },
-];
+]

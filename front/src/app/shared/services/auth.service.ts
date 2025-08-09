@@ -1,27 +1,23 @@
 import { Router } from '@angular/router';
 import { loginForm, User } from './../interfaces/user.interfaces';
-
-import { computed, inject, Injectable, resource } from '@angular/core';
+import { computed, inject, Injectable, resource, signal } from '@angular/core'; // ⬅️ signal
 import { UserForm } from '../interfaces/user.interfaces';
-import { environment } from '../../../environments/environment';
 
-const API_AUTH = `${environment.apiUrl}/auth`;
-const API_USER = `${environment.apiUrl}/users`;
-@Injectable({
-  providedIn: 'root',
-})
+const API_AUTH = 'http://localhost:8080/auth';
+const API_USER = 'http://localhost:8080/users';
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  // 🔔 signal pour notifier les autres services/pages d’un changement d’auth
+  authChanged = signal<number>(0);
+
   currentUserResource = resource({
     loader: () => this.fetchCurrentUser(),
   });
 
   isLoggedin = computed(() => {
     const value = this.currentUserResource.value();
-    if (value !== undefined) {
-      return !!value;
-    } else {
-      return undefined;
-    }
+    return value !== undefined ? !!value : undefined;
   });
 
   currentUser = computed(() => this.currentUserResource.value());
@@ -30,10 +26,10 @@ export class AuthService {
   async fetchCurrentUser() {
     const response = await fetch(`${API_USER}/me`, {
       credentials: 'include',
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
     });
-    if (!response.ok) {
-      return undefined;
-    }
+    if (!response.ok) return undefined;
     return await response.json();
   }
 
@@ -41,19 +37,17 @@ export class AuthService {
     try {
       const response = await fetch(`${API_AUTH}/register`, {
         method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
+        headers: { 'Content-type': 'application/json', 'Cache-Control': 'no-cache' },
         body: JSON.stringify(user),
         credentials: 'include',
+        cache: 'no-store'
       });
-      if (response.ok) {
-        const data = await response.json();
-        this.currentUserResource.reload();
-        return data;
-      } else {
-        throw new Error('Oops');
-      }
+      if (!response.ok) throw new Error('Oops');
+
+      const data = await response.json();
+      this.currentUserResource.reload();
+      this.authChanged.set(Date.now());     // 🔔 
+      return data;
     } catch {
       throw new Error('Oops');
     }
@@ -64,19 +58,17 @@ export class AuthService {
       const response = await fetch(`${API_AUTH}/login`, {
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-type': 'application/json',
-        },
+        headers: { 'Content-type': 'application/json', 'Cache-Control': 'no-cache' },
         body: JSON.stringify(loginForm),
+        cache: 'no-store'
       });
-      if (response.ok) {
-        const data = await response.json();
-        this.currentUserResource.reload();
-        return data as User;
-      } else {
-        throw new Error('Oops');
-      }
-    } catch (e) {
+      if (!response.ok) throw new Error('Oops');
+
+      const data = await response.json();
+      this.currentUserResource.reload();
+      this.authChanged.set(Date.now());     // 🔔
+      return data as User;
+    } catch {
       throw new Error('Oops');
     }
   }
@@ -85,8 +77,11 @@ export class AuthService {
     await fetch(`${API_AUTH}/logout`, {
       method: 'DELETE',
       credentials: 'include',
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
     });
     this.currentUserResource.reload();
+    this.authChanged.set(Date.now());       // 🔔
     this.router.navigateByUrl('/signIn');
   }
 
